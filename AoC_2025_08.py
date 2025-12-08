@@ -2,7 +2,7 @@ import heapq
 def dist(a:tuple , b: tuple) -> int:
     return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2
 
-connections = 1000
+connections = 10
 boxes = []
 distances = []
 groups = []
@@ -33,6 +33,26 @@ for c in range(connections):
     if found < 0:
         groups.append({a, b})
 groups.sort(key=lambda x: len(x), reverse=True)
-#print(groups)
 res1 = len(groups[0])*len(groups[1])*len(groups[2])
 print('Part 1 answer: ', res1)
+# Just continue!
+while len(groups[0]) < len(boxes):
+    dist, a, b = heapq.heappop(distances)
+    found =-1
+    k = 0
+    while k < len(groups):
+        if (a in groups[k]) or (b in groups[k]):
+            if found < 0:
+                found = k
+                k += 1
+            else:
+                groups[found].update(groups[k])
+                del groups[k]
+            groups[found].add(a)
+            groups[found].add(b)
+        else:
+            k += 1
+    if found < 0:
+        groups.append({a, b})
+res2 = boxes[a][0] * boxes[b][0]
+print('Part 2 answer: ', res2)

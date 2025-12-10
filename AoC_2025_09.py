@@ -8,10 +8,8 @@ def intersects (seg1, seg2) -> bool:
     # Они пересекаются, если seg1.Y между seg2.Y1 и seg2.Y2, а seg2.X между seg1.X1 и seg1.X2
     # И это, разумеется, симметрично!
     return (seg2[1][0] < seg1[0] < seg2[1][1]) and (seg1[1][0] < seg2[0] < seg1[1][1])
-connections = 1000
 tiles = []
 rectangles = []
-groups = []
 vertical = []
 horizontal = []
 for i, lin in enumerate(open('input_09.txt', 'r', encoding='utf-8')):

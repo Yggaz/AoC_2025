@@ -1,3 +1,5 @@
+import numpy as np
+import scipy.optimize
 from functools import lru_cache
 
 @lru_cache(maxsize = None)
@@ -37,6 +39,17 @@ for i, lin in enumerate(open('input_10.txt', 'r', encoding='utf-8')):
     buttons = tuple(buttons_list)
     buttons2 = tuple(buttons_list2)
     res1 += press(target, current, buttons)
+    #res2 += press2(joltage, current2, buttons2)
 print('Part 1 answer:', res1)
-print('Part 2 answer:', res2)
+joltagenp = np.asarray(joltage)
+buttonsnp = np.asarray(buttons2)
+c = np.asarray([1] * len(buttonsnp))
+buttonst = buttonsnp.transpose()
+opt = scipy.optimize.linprog(c, A_eq=buttonst, b_eq=joltagenp, integrality=1, method="highs")
+res2 += opt.fun
+if not opt.success:
+    print(joltagenp)
+    print(buttonst)
+    print(opt)
+print('Part 2 answer:', int(res2))
 print(press.cache_info())
